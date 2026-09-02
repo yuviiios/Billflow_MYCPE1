@@ -18,6 +18,12 @@ Modern invoice management system built with FastAPI and Next.js.
 **Backend API:** https://billflow-mycpe1.onrender.com
 **Frontend:** [Deploying to Vercel]
 
+### Demo Login
+
+**Email:** `demo@billflow.app`  
+**Password:** `demo123`
+
+
 **API Endpoints:**
 - Swagger UI: https://billflow-mycpe1.onrender.com/docs
 - ReDoc: https://billflow-mycpe1.onrender.com/redoc
