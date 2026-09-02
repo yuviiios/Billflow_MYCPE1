@@ -40,10 +40,14 @@ def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
     configuration = config.get_section(config.config_ini_section)
     url = os.getenv("DATABASE_URL")
-    if not url.startswith("postgresql+"):
+
+    # Convert postgres URL to use psycopg driver
+    if url.startswith("postgresql://") and not url.startswith("postgresql+"):
         url = url.replace("postgresql://", "postgresql+psycopg://", 1)
+
     configuration["sqlalchemy.url"] = url
 
+    # Add render_as_batch for SQLite support
     connectable = engine_from_config(
         configuration,
         prefix="sqlalchemy.",
@@ -52,7 +56,9 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            render_as_batch=True  # Enable batch mode for SQLite
         )
 
         with context.begin_transaction():

@@ -23,7 +23,7 @@ def register(user_create: UserCreate, db: Session = Depends(get_db)):
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user": UserResponse.from_orm(new_user)
+        "user": UserResponse.model_validate(new_user)
     }
 
 @router.post("/login", response_model=TokenResponse)
@@ -36,7 +36,7 @@ def login(user_create: UserCreate, db: Session = Depends(get_db)):
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user": UserResponse.from_orm(user)
+        "user": UserResponse.model_validate(user)
     }
 
 @router.get("/me", response_model=UserResponse)

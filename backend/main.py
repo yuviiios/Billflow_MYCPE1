@@ -6,7 +6,6 @@ from routes_auth import router as auth_router
 from routes_clients import router as clients_router
 from routes_invoices import router as invoices_router
 from routes_settings import router as settings_router
-from database import Base, engine
 
 load_dotenv()
 
@@ -22,8 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
-
+# Schema is owned by Alembic (`alembic upgrade head`) or `python init_db.py` for a
+# throwaway local DB. Creating tables on import silently diverges from migrations.
 app.include_router(auth_router)
 app.include_router(clients_router)
 app.include_router(invoices_router)
