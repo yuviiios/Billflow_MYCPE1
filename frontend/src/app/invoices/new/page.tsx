@@ -111,32 +111,50 @@ export default function NewInvoicePage() {
   const total = calculateTotal();
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-16">
-          <Link href="/dashboard" className="text-xl font-semibold">BillFlow</Link>
+    <main className="min-h-screen bg-white">
+      <nav className="border-b border-gray-200 bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <div className="flex items-center gap-8">
+            <Link href="/dashboard" className="text-xl font-semibold text-gray-900">
+              BillFlow
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Dashboard
+              </Link>
+              <Link href="/clients" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Clients
+              </Link>
+              <Link href="/invoices" className="text-sm font-medium text-gray-900">
+                Invoices
+              </Link>
+              <Link href="/settings" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Settings
+              </Link>
+            </div>
+          </div>
         </div>
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="mb-8">
-          <Link href="/invoices" className="text-sm text-gray-600 hover:text-gray-900">
+          <Link href="/invoices" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
             ← Back to invoices
           </Link>
-          <h1 className="text-3xl font-bold mt-2">New Invoice</h1>
+          <h1 className="text-3xl font-semibold text-gray-900 mt-2">New Invoice</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-white rounded-lg border p-6">
-            <h2 className="text-lg font-semibold mb-4">Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium mb-1">Client</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Client</label>
                 <select
                   required
                   value={formData.client_id}
                   onChange={(e) => setFormData({ ...formData, client_id: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
                   <option value="">Select client</option>
                   {clients.map((client) => (
@@ -147,47 +165,47 @@ export default function NewInvoicePage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Invoice Number</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Invoice Number</label>
                 <input
                   type="text"
                   required
                   value={formData.invoice_number}
                   onChange={(e) => setFormData({ ...formData, invoice_number: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Issue Date</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Issue Date</label>
                 <input
                   type="date"
                   required
                   value={formData.issue_date}
                   onChange={(e) => setFormData({ ...formData, issue_date: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Due Date</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Due Date</label>
                 <input
                   type="date"
                   required
                   value={formData.due_date}
                   onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Line Items</h2>
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Line Items</h2>
               <button
                 type="button"
                 onClick={addLineItem}
-                className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
+                className="text-sm px-3 py-1.5 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                + Add Line
+                Add Line
               </button>
             </div>
             <div className="space-y-3">
@@ -199,7 +217,7 @@ export default function NewInvoicePage() {
                       placeholder="Description"
                       value={item.description}
                       onChange={(e) => updateLineItem(index, 'description', e.target.value)}
-                      className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     />
                   </div>
                   <div className="col-span-2">
@@ -210,7 +228,7 @@ export default function NewInvoicePage() {
                       placeholder="Qty"
                       value={item.quantity}
                       onChange={(e) => updateLineItem(index, 'quantity', e.target.value)}
-                      className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     />
                   </div>
                   <div className="col-span-2">
@@ -221,16 +239,16 @@ export default function NewInvoicePage() {
                       placeholder="Price"
                       value={item.unit_price}
                       onChange={(e) => updateLineItem(index, 'unit_price', e.target.value)}
-                      className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     />
                   </div>
                   <div className="col-span-2 flex items-center justify-between">
-                    <span className="text-sm font-medium">${item.amount.toFixed(2)}</span>
+                    <span className="text-sm font-medium text-gray-900">${item.amount.toFixed(2)}</span>
                     {lineItems.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeLineItem(index)}
-                        className="text-red-600 text-sm hover:text-red-700"
+                        className="text-red-600 text-lg hover:text-red-700 font-medium"
                       >
                         ×
                       </button>
@@ -239,22 +257,22 @@ export default function NewInvoicePage() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 pt-6 border-t flex justify-end">
+            <div className="mt-6 pt-6 border-t border-gray-200 flex justify-end">
               <div className="text-right">
-                <div className="text-sm text-gray-600">Total</div>
-                <div className="text-2xl font-bold">${total.toFixed(2)}</div>
+                <div className="text-sm text-gray-600 mb-1">Total</div>
+                <div className="text-2xl font-semibold text-gray-900">${total.toFixed(2)}</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border p-6">
-            <h2 className="text-lg font-semibold mb-4">Notes</h2>
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Notes</h2>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={4}
               placeholder="Payment terms, additional info..."
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
             />
           </div>
 
@@ -262,13 +280,13 @@ export default function NewInvoicePage() {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2 bg-black text-white rounded hover:bg-gray-800 disabled:opacity-50"
+              className="px-6 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
             >
               {submitting ? 'Creating...' : 'Create Invoice'}
             </button>
             <Link
               href="/invoices"
-              className="px-6 py-2 border rounded hover:bg-gray-50 inline-block"
+              className="px-6 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 inline-block transition-colors"
             >
               Cancel
             </Link>

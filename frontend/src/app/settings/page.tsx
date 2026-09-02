@@ -40,7 +40,16 @@ export default function SettingsPage() {
     try {
       const data = await getSettings();
       if (data) {
-        setFormData(data);
+        setFormData({
+          business_name: data.business_name || '',
+          business_email: data.business_email || '',
+          business_address: data.business_address || '',
+          business_phone: data.business_phone || '',
+          tax_rate: data.tax_rate || 0,
+          currency: data.currency || 'USD',
+          payment_terms: data.payment_terms || '',
+          logo_url: data.logo_url || '',
+        });
       }
       setLoading(false);
     } catch (error: any) {
@@ -94,8 +103,8 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <nav className="bg-white border-b">
+      <div className="min-h-screen bg-white">
+        <nav className="border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-16">
             <div className="h-6 w-24 bg-gray-200 rounded animate-pulse" />
           </div>
@@ -103,7 +112,7 @@ export default function SettingsPage() {
         <div className="max-w-3xl mx-auto px-6 py-12">
           <div className="space-y-6">
             {[...Array(2)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg border p-6">
+              <div key={i} className="bg-white border border-gray-200 rounded-lg p-6">
                 <div className="h-6 w-48 bg-gray-200 rounded animate-pulse mb-4" />
                 <div className="space-y-4">
                   {[...Array(3)].map((_, j) => (
@@ -122,32 +131,48 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16">
-          <Link href="/dashboard" className="text-lg sm:text-xl font-semibold">
-            BillFlow
-          </Link>
+    <main className="min-h-screen bg-white">
+      <nav className="border-b border-gray-200 bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <div className="flex items-center gap-8">
+            <Link href="/dashboard" className="text-xl font-semibold text-gray-900">
+              BillFlow
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Dashboard
+              </Link>
+              <Link href="/clients" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Clients
+              </Link>
+              <Link href="/invoices" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Invoices
+              </Link>
+              <Link href="/settings" className="text-sm font-medium text-gray-900">
+                Settings
+              </Link>
+            </div>
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <div className="mb-6 sm:mb-8">
-          <Link href="/dashboard" className="text-sm text-gray-600 hover:text-gray-900">
+      <div className="max-w-3xl mx-auto px-6 py-12">
+        <div className="mb-8">
+          <Link href="/dashboard" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
             ← Back to dashboard
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold mt-2">Settings</h1>
+          <h1 className="text-3xl font-semibold text-gray-900 mt-2">Settings</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-white rounded-lg border p-4 sm:p-6">
-            <h2 className="text-base sm:text-lg font-semibold mb-4">Business Information</h2>
-            <div className="space-y-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Business Information</h2>
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-1">Business Logo</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Business Logo</label>
                 <div className="flex flex-col sm:flex-row items-start gap-4">
                   {formData.logo_url && (
-                    <div className="relative w-32 h-32 border-2 border-dashed rounded-lg overflow-hidden">
+                    <div className="relative w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
                       <img src={formData.logo_url} alt="Logo" className="w-full h-full object-contain" />
                     </div>
                   )}
@@ -156,9 +181,9 @@ export default function SettingsPage() {
                       type="file"
                       accept="image/*"
                       onChange={handleLogoUpload}
-                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                     />
-                    <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 2MB</p>
+                    <p className="text-xs text-gray-600 mt-1">PNG, JPG up to 2MB</p>
                     {formData.logo_url && (
                       <button
                         type="button"
@@ -172,66 +197,66 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Business Name *</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Business Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.business_name}
                   onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Business Email *</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Business Email *</label>
                 <input
                   type="email"
                   required
                   value={formData.business_email}
                   onChange={(e) => setFormData({ ...formData, business_email: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Business Address</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Business Address</label>
                 <textarea
                   value={formData.business_address || ''}
                   onChange={(e) => setFormData({ ...formData, business_address: e.target.value })}
                   rows={2}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Business Phone</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Business Phone</label>
                 <input
                   type="text"
                   value={formData.business_phone || ''}
                   onChange={(e) => setFormData({ ...formData, business_phone: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border p-4 sm:p-6">
-            <h2 className="text-base sm:text-lg font-semibold mb-4">Invoice Defaults</h2>
-            <div className="space-y-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Invoice Defaults</h2>
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-1">Tax Rate (%)</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Tax Rate (%)</label>
                 <input
                   type="number"
                   min="0"
                   step="0.01"
                   value={formData.tax_rate}
                   onChange={(e) => setFormData({ ...formData, tax_rate: Number(e.target.value) })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Currency</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Currency</label>
                 <select
                   value={formData.currency}
                   onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
                   <option value="USD">USD ($)</option>
                   <option value="EUR">EUR (€)</option>
@@ -240,29 +265,29 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Payment Terms</label>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Payment Terms</label>
                 <textarea
                   value={formData.payment_terms || ''}
                   onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
                   rows={4}
                   placeholder="Payment due within 30 days..."
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex gap-3">
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 text-sm sm:text-base"
+              className="px-6 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
             >
               {saving ? 'Saving...' : 'Save Settings'}
             </button>
             <Link
               href="/dashboard"
-              className="px-6 py-2 border rounded hover:bg-gray-50 inline-block text-center text-sm sm:text-base"
+              className="px-6 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 inline-block text-center transition-colors"
             >
               Cancel
             </Link>

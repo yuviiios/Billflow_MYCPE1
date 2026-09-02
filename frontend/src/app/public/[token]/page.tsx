@@ -126,27 +126,27 @@ export default function PublicInvoicePage() {
         }
       `}</style>
 
-      <main className="min-h-screen bg-gray-50 print:bg-white">
-        <div className="no-print bg-white border-b py-4">
+      <main className="min-h-screen bg-white print:bg-white">
+        <div className="no-print bg-white border-b border-gray-200 py-4">
           <div className="max-w-4xl mx-auto px-6 flex justify-between items-center">
-            <div className="text-xl font-semibold text-gray-900">Invoice</div>
+            <div className="text-xl font-semibold text-gray-900">BillFlow</div>
             <div className="flex gap-3">
               <button
                 onClick={handleDownload}
-                className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors"
               >
                 Download PDF
               </button>
               <button
                 onClick={handlePrint}
-                className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors"
               >
                 Print
               </button>
               {canPay && (
                 <button
                   onClick={handlePay}
-                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors"
                 >
                   Pay Now
                 </button>
@@ -156,7 +156,7 @@ export default function PublicInvoicePage() {
         </div>
 
         <div className="print-container max-w-4xl mx-auto px-6 py-12 print:py-0">
-          <div className="bg-white rounded-lg border print:border-0 print:shadow-none p-12">
+          <div className="bg-white border border-gray-200 rounded-lg print:border-0 print:shadow-none p-12">
             {/* Header */}
             <div className="flex justify-between items-start mb-12">
               <div>

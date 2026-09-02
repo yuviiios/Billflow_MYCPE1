@@ -2,23 +2,23 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">BillFlow</h1>
-        <p className="text-gray-600 mb-8">Simple invoicing for freelancers</p>
+    <main className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="max-w-md w-full text-center">
+        <h1 className="text-4xl font-semibold text-gray-900 mb-4">BillFlow</h1>
+        <p className="text-lg text-gray-600 mb-12">Simple invoicing for freelancers</p>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           <Link
             href="/login"
-            className="block w-full bg-indigo-600 text-white py-2 rounded-lg text-center font-semibold hover:bg-indigo-700"
+            className="block w-full bg-indigo-600 text-white py-2.5 rounded-lg text-center text-sm font-medium hover:bg-indigo-700 transition-colors"
           >
-            Login
+            Sign in
           </Link>
           <Link
             href="/register"
-            className="block w-full bg-gray-200 text-gray-900 py-2 rounded-lg text-center font-semibold hover:bg-gray-300"
+            className="block w-full border border-gray-300 text-gray-700 py-2.5 rounded-lg text-center text-sm font-medium hover:bg-gray-50 transition-colors"
           >
-            Sign Up
+            Create account
           </Link>
         </div>
       </div>

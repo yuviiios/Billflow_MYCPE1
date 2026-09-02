@@ -78,23 +78,23 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <nav className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="min-h-screen bg-white">
+        <nav className="border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div className="h-6 w-32 bg-gray-200 rounded animate-pulse" />
             <div className="h-8 w-20 bg-gray-200 rounded animate-pulse" />
           </div>
         </nav>
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-white p-6 rounded-lg shadow">
+              <div key={i} className="bg-white border border-gray-200 p-6 rounded-lg">
                 <div className="h-4 w-24 bg-gray-200 rounded animate-pulse mb-2" />
                 <div className="h-8 w-32 bg-gray-200 rounded animate-pulse" />
               </div>
             ))}
           </div>
-          <div className="bg-white p-6 rounded-lg shadow mb-8">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg mb-8">
             <div className="h-6 w-48 bg-gray-200 rounded animate-pulse mb-4" />
             <div className="h-64 bg-gray-100 rounded animate-pulse" />
           </div>
@@ -106,15 +106,33 @@ export default function DashboardPage() {
   if (!stats) return null;
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">BillFlow</h1>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <span className="text-xs sm:text-sm text-gray-600 hidden sm:block">{user?.email}</span>
+    <main className="min-h-screen bg-white">
+      <nav className="border-b border-gray-200 bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <div className="flex items-center gap-8">
+            <Link href="/dashboard" className="text-xl font-semibold text-gray-900">
+              BillFlow
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/dashboard" className="text-sm font-medium text-gray-900">
+                Dashboard
+              </Link>
+              <Link href="/clients" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Clients
+              </Link>
+              <Link href="/invoices" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Invoices
+              </Link>
+              <Link href="/settings" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Settings
+              </Link>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-600 hidden sm:inline">{user?.email}</span>
             <button
               onClick={handleLogout}
-              className="px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg text-xs sm:text-sm hover:bg-red-700"
+              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
             >
               Logout
             </button>
@@ -122,51 +140,51 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Dashboard</h2>
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <h1 className="text-3xl font-semibold text-gray-900 mb-8">Dashboard</h1>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <div className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">Total Earned</div>
-            <div className="text-xl sm:text-2xl font-bold text-green-600">{formatCurrency(stats.earned)}</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg">
+            <div className="text-sm font-medium text-gray-600 mb-2">Total Earned</div>
+            <div className="text-2xl font-semibold text-gray-900">{formatCurrency(stats.earned)}</div>
           </div>
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <div className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">Outstanding</div>
-            <div className="text-xl sm:text-2xl font-bold text-blue-600">{formatCurrency(stats.outstanding)}</div>
+          <div className="bg-white border border-gray-200 p-6 rounded-lg">
+            <div className="text-sm font-medium text-gray-600 mb-2">Outstanding</div>
+            <div className="text-2xl font-semibold text-gray-900">{formatCurrency(stats.outstanding)}</div>
           </div>
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <div className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">Overdue</div>
-            <div className="text-xl sm:text-2xl font-bold text-red-600">{formatCurrency(stats.overdue)}</div>
+          <div className="bg-white border border-gray-200 p-6 rounded-lg">
+            <div className="text-sm font-medium text-gray-600 mb-2">Overdue</div>
+            <div className="text-2xl font-semibold text-gray-900">{formatCurrency(stats.overdue)}</div>
           </div>
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <div className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">Clients</div>
-            <div className="text-xl sm:text-2xl font-bold text-gray-900">{stats.client_count}</div>
+          <div className="bg-white border border-gray-200 p-6 rounded-lg">
+            <div className="text-sm font-medium text-gray-600 mb-2">Clients</div>
+            <div className="text-2xl font-semibold text-gray-900">{stats.client_count}</div>
           </div>
         </div>
 
         {/* Income Chart */}
         {stats.monthly_income.length > 0 ? (
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Monthly Income (Last 12 Months)</h3>
-            <ResponsiveContainer width="100%" height={250}>
+          <div className="bg-white border border-gray-200 p-6 rounded-lg mb-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Monthly Income</h2>
+            <ResponsiveContainer width="100%" height={280}>
               <LineChart data={stats.monthly_income}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                <Line type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={2} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#6b7280' }} />
+                <YAxis tick={{ fontSize: 12, fill: '#6b7280' }} />
+                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                <Line type="monotone" dataKey="total" stroke="#4f46e5" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="bg-white p-8 sm:p-12 rounded-lg shadow mb-6 sm:mb-8 text-center">
-            <div className="text-4xl sm:text-6xl mb-4">📊</div>
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No income data yet</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Create and send invoices to see your income chart</p>
+          <div className="bg-white border border-gray-200 p-12 rounded-lg mb-8 text-center">
+            <div className="text-6xl mb-4">📊</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No income data yet</h3>
+            <p className="text-base text-gray-600 mb-6">Create and send invoices to see your income chart</p>
             <Link
               href="/invoices/new"
-              className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base"
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
             >
               Create Invoice
             </Link>
@@ -174,10 +192,10 @@ export default function DashboardPage() {
         )}
 
         {/* Recent Invoices */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-4 sm:p-6 border-b border-gray-200 flex justify-between items-center">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Recent Invoices</h3>
-            <Link href="/invoices" className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium">
+        <div className="bg-white border border-gray-200 rounded-lg">
+          <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Invoices</h2>
+            <Link href="/invoices" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors">
               View All
             </Link>
           </div>
@@ -188,25 +206,25 @@ export default function DashboardPage() {
                 <Link
                   key={invoice.id}
                   href={`/invoices/${invoice.id}`}
-                  className="block p-4 sm:p-6 hover:bg-gray-50 transition-colors"
+                  className="block p-6 hover:bg-gray-50 transition-colors"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <div className="flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-gray-900 text-sm sm:text-base">
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="font-medium text-gray-900">
                           {invoice.invoice_number}
                         </span>
                         <span className={`px-2 py-1 text-xs font-medium rounded ${getStatusColor(invoice.status)}`}>
                           {invoice.status}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-600 truncate">{invoice.client_name}</p>
+                      <p className="text-sm text-gray-600 truncate">{invoice.client_name}</p>
                     </div>
-                    <div className="flex items-center justify-between sm:justify-end gap-4">
-                      <span className="text-sm sm:text-base font-semibold text-gray-900">
+                    <div className="flex items-center gap-6 text-right">
+                      <span className="font-semibold text-gray-900">
                         {formatCurrency(invoice.total)}
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-500">
+                      <span className="text-sm text-gray-600 min-w-[100px]">
                         {new Date(invoice.issue_date).toLocaleDateString()}
                       </span>
                     </div>
@@ -215,13 +233,13 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="p-8 sm:p-12 text-center">
-              <div className="text-4xl sm:text-6xl mb-4">📄</div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No invoices yet</h3>
-              <p className="text-sm sm:text-base text-gray-600 mb-4">Get started by creating your first invoice</p>
+            <div className="p-12 text-center">
+              <div className="text-6xl mb-4">📄</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No invoices yet</h3>
+              <p className="text-base text-gray-600 mb-6">Get started by creating your first invoice</p>
               <Link
                 href="/invoices/new"
-                className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base"
+                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
               >
                 Create Invoice
               </Link>
@@ -229,30 +247,30 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Quick Links */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
           <Link
             href="/clients"
-            className="bg-white p-4 sm:p-6 rounded-lg shadow hover:shadow-lg transition-shadow"
+            className="bg-white border border-gray-200 p-6 rounded-lg hover:border-gray-300 transition-colors"
           >
-            <h3 className="text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2">Clients</h3>
-            <p className="text-sm sm:text-base text-gray-600">Manage your clients</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Clients</h3>
+            <p className="text-sm text-gray-600">Manage your clients</p>
           </Link>
 
           <Link
             href="/invoices"
-            className="bg-white p-4 sm:p-6 rounded-lg shadow hover:shadow-lg transition-shadow"
+            className="bg-white border border-gray-200 p-6 rounded-lg hover:border-gray-300 transition-colors"
           >
-            <h3 className="text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2">Invoices</h3>
-            <p className="text-sm sm:text-base text-gray-600">View and create invoices</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Invoices</h3>
+            <p className="text-sm text-gray-600">View and create invoices</p>
           </Link>
 
           <Link
             href="/settings"
-            className="bg-white p-4 sm:p-6 rounded-lg shadow hover:shadow-lg transition-shadow"
+            className="bg-white border border-gray-200 p-6 rounded-lg hover:border-gray-300 transition-colors"
           >
-            <h3 className="text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2">Settings</h3>
-            <p className="text-sm sm:text-base text-gray-600">Configure your account</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Settings</h3>
+            <p className="text-sm text-gray-600">Configure your account</p>
           </Link>
         </div>
       </div>

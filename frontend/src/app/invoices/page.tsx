@@ -108,18 +108,18 @@ export default function InvoicesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <nav className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex justify-between items-center">
+      <div className="min-h-screen bg-white">
+        <nav className="border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
             <div className="h-6 w-24 bg-gray-200 rounded animate-pulse" />
           </div>
         </nav>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="flex justify-between items-center mb-8">
             <div className="h-9 w-32 bg-gray-200 rounded animate-pulse" />
             <div className="h-10 w-32 bg-gray-200 rounded animate-pulse" />
           </div>
-          <div className="bg-white rounded-lg border p-4 mb-6">
+          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[...Array(3)].map((_, i) => (
                 <div key={i}>
@@ -129,7 +129,7 @@ export default function InvoicesPage() {
               ))}
             </div>
           </div>
-          <div className="bg-white rounded-lg border overflow-hidden">
+          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="p-6 border-b last:border-0">
                 <div className="h-4 bg-gray-200 rounded animate-pulse" />
@@ -142,34 +142,50 @@ export default function InvoicesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16">
-          <Link href="/dashboard" className="text-lg sm:text-xl font-semibold">
-            BillFlow
-          </Link>
+    <main className="min-h-screen bg-white">
+      <nav className="border-b border-gray-200 bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <div className="flex items-center gap-8">
+            <Link href="/dashboard" className="text-xl font-semibold text-gray-900">
+              BillFlow
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Dashboard
+              </Link>
+              <Link href="/clients" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Clients
+              </Link>
+              <Link href="/invoices" className="text-sm font-medium text-gray-900">
+                Invoices
+              </Link>
+              <Link href="/settings" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                Settings
+              </Link>
+            </div>
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold">Invoices</h1>
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-semibold text-gray-900">Invoices</h1>
           <Link
             href="/invoices/new"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm sm:text-base"
+            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
           >
-            + New Invoice
+            New Invoice
           </Link>
         </div>
 
-        <div className="bg-white rounded-lg border p-4 mb-6">
+        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Status</label>
+              <label className="block text-sm font-medium text-gray-900 mb-2">Status</label>
               <select
                 value={filters.status}
                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               >
                 <option value="">All</option>
                 <option value="draft">Draft</option>
@@ -179,11 +195,11 @@ export default function InvoicesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Client</label>
+              <label className="block text-sm font-medium text-gray-900 mb-2">Client</label>
               <select
                 value={filters.client_id}
                 onChange={(e) => setFilters({ ...filters, client_id: e.target.value })}
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               >
                 <option value="">All</option>
                 {clients.map((client) => (
@@ -194,27 +210,27 @@ export default function InvoicesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Search</label>
+              <label className="block text-sm font-medium text-gray-900 mb-2">Search</label>
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                 placeholder="Invoice number or client..."
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               />
             </div>
           </div>
         </div>
 
         {invoices.length === 0 ? (
-          <div className="bg-white rounded-lg border p-8 sm:p-12 text-center">
-            <div className="text-5xl sm:text-6xl mb-4">📄</div>
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+          <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
+            <div className="text-6xl mb-4">📄</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
               {filters.status || filters.client_id || filters.search
                 ? 'No invoices match your filters'
                 : 'No invoices yet'}
             </h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">
+            <p className="text-base text-gray-600 mb-6">
               {filters.status || filters.client_id || filters.search
                 ? 'Try adjusting your filters to see more results'
                 : 'Create your first invoice to get started'}
@@ -222,7 +238,7 @@ export default function InvoicesPage() {
             {!filters.status && !filters.client_id && !filters.search && (
               <Link
                 href="/invoices/new"
-                className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base"
+                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
               >
                 Create First Invoice
               </Link>
@@ -236,14 +252,14 @@ export default function InvoicesPage() {
                 <Link
                   key={invoice.id}
                   href={`/invoices/${invoice.id}`}
-                  className="block bg-white rounded-lg border p-4 hover:shadow-md transition-shadow"
+                  className="block bg-white border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors"
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <div className="font-semibold text-gray-900">{invoice.invoice_number}</div>
+                      <div className="font-medium text-gray-900">{invoice.invoice_number}</div>
                       <div className="text-sm text-gray-600">{invoice.client_name}</div>
                     </div>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(invoice.status)}`}>
+                    <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getStatusColor(invoice.status)}`}>
                       {invoice.status}
                     </span>
                   </div>
@@ -265,24 +281,24 @@ export default function InvoicesPage() {
             </div>
 
             {/* Desktop: Table */}
-            <div className="hidden sm:block bg-white rounded-lg border overflow-x-auto">
+            <div className="hidden sm:block bg-white border border-gray-200 rounded-lg overflow-x-auto">
               <table className="w-full">
-                <thead className="border-b bg-gray-50">
+                <thead className="border-b border-gray-200 bg-gray-50">
                   <tr className="text-left">
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700">Number</th>
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700">Client</th>
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700">Issue Date</th>
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700">Due Date</th>
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700">Status</th>
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700 text-right">Amount</th>
-                    <th className="px-6 py-3 font-medium text-sm text-gray-700"></th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900">Number</th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900">Client</th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900">Issue Date</th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900">Due Date</th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900">Status</th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900 text-right">Amount</th>
+                    <th className="px-6 py-4 font-medium text-sm text-gray-900"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {invoices.map((invoice) => (
-                    <tr key={invoice.id} className="border-b last:border-0 hover:bg-gray-50">
+                    <tr key={invoice.id} className="border-b border-gray-200 last:border-0 hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
-                        <Link href={`/invoices/${invoice.id}`} className="hover:underline text-blue-600">
+                        <Link href={`/invoices/${invoice.id}`} className="font-medium text-indigo-600 hover:text-indigo-700">
                           {invoice.invoice_number}
                         </Link>
                       </td>
@@ -290,15 +306,15 @@ export default function InvoicesPage() {
                       <td className="px-6 py-4 text-gray-600">{formatDate(invoice.issue_date)}</td>
                       <td className="px-6 py-4 text-gray-600">{formatDate(invoice.due_date)}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(invoice.status)}`}>
+                        <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getStatusColor(invoice.status)}`}>
                           {invoice.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-right font-medium">{formatCurrency(invoice.total)}</td>
+                      <td className="px-6 py-4 text-right font-semibold text-gray-900">{formatCurrency(invoice.total)}</td>
                       <td className="px-6 py-4 text-right">
                         <button
                           onClick={() => handleDelete(invoice.id)}
-                          className="text-sm px-3 py-1 hover:bg-red-50 text-red-600 rounded"
+                          className="text-sm px-3 py-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         >
                           Delete
                         </button>
