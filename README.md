@@ -15,14 +15,12 @@ Modern invoice management system built with FastAPI and Next.js.
 
 ## Demo
 
-Try the live demo at: `[YOUR_DEPLOYED_URL]`
+**Backend API:** https://billflow-mycpe1.onrender.com
+**Frontend:** [Deploying to Vercel]
 
-**Demo Credentials:**
-- Email: `demo@billflow.app`
-- Password: `demo123`
-
-**Public Invoice Example:**
-- View a sample invoice at: `http://localhost:3000/invoice/550e8400-e29b-41d4-a716-446655440000`
+**API Endpoints:**
+- Swagger UI: https://billflow-mycpe1.onrender.com/docs
+- ReDoc: https://billflow-mycpe1.onrender.com/redoc
 
 ## Tech Stack
 
@@ -45,7 +43,7 @@ Try the live demo at: `[YOUR_DEPLOYED_URL]`
 
 ### Prerequisites
 
-- Python 3.10+
+- Python 3.11+
 - Node.js 18+
 - PostgreSQL 14+
 
@@ -206,17 +204,17 @@ Once the backend is running, visit:
 
 ## Deployment
 
-### Backend
-- Deploy to: Railway, Render, Fly.io, AWS, etc.
-- Ensure PostgreSQL database is provisioned
-- Set environment variables in platform dashboard
-- Run `python init_db.py` after first deploy
+### Backend (Render)
+- Deployed at: https://billflow-mycpe1.onrender.com
+- Python 3.11.9 pinned via `backend/.python-version`
+- Requires: PostgreSQL database, JWT_SECRET, and FRONTEND_URL env vars
+- First deploy: run migrations via Alembic if needed
 
-### Frontend
-- Deploy to: Vercel, Netlify, Railway, etc.
-- Set `NEXT_PUBLIC_API_URL` to your backend URL
+### Frontend (Vercel)
+- Set `NEXT_PUBLIC_API_URL=https://billflow-mycpe1.onrender.com`
 - Build command: `npm run build`
 - Output directory: `.next`
+- Root Directory: `frontend`
 
 ## License
 
