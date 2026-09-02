@@ -107,3 +107,9 @@ export const updateSettings = async (data: any) => {
   const res = await api.put('/settings', data);
   return res.data;
 };
+
+// Analytics
+export const getDashboardStats = async () => {
+  const res = await api.get('/analytics/dashboard');
+  return res.data;
+};

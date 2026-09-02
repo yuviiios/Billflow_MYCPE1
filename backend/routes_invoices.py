@@ -263,6 +263,7 @@ def download_public_invoice_pdf(token: str, db: Session = Depends(get_db)):
         business_name=settings.business_name if settings else "My Business",
         business_address=settings.business_address if settings else None,
         status=invoice.status,
+        logo_url=settings.logo_url if settings and settings.logo_url else None,
     )
 
     filename = f"invoice_{invoice.invoice_number}.pdf"
@@ -387,6 +388,7 @@ def download_invoice_pdf(
         business_name=settings.business_name if settings else "My Business",
         business_address=settings.business_address if settings else None,
         status=invoice.status,
+        logo_url=settings.logo_url if settings and settings.logo_url else None,
     )
 
     filename = f"invoice_{invoice.invoice_number}.pdf"

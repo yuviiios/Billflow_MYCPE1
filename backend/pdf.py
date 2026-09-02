@@ -2,11 +2,12 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
 from reportlab.lib.enums import TA_RIGHT, TA_LEFT
 from io import BytesIO
 from datetime import datetime
 from typing import Optional
+import base64
 
 
 def generate_invoice_pdf(
@@ -24,6 +25,7 @@ def generate_invoice_pdf(
     business_name: str = "My Business",
     business_address: Optional[str] = None,
     status: str = "draft",
+    logo_url: Optional[str] = None,
 ) -> BytesIO:
     """
     Generate a PDF invoice using ReportLab.
@@ -61,6 +63,19 @@ def generate_invoice_pdf(
     right_align_style = ParagraphStyle(
         "RightAlign", parent=styles["Normal"], alignment=TA_RIGHT, fontSize=10
     )
+
+    # Logo and Header
+    if logo_url and logo_url.startswith("data:image"):
+        try:
+            # Extract base64 data from data URL
+            base64_data = logo_url.split(",")[1]
+            logo_bytes = BytesIO(base64.b64decode(base64_data))
+            logo_img = Image(logo_bytes, width=1.5 * inch, height=0.75 * inch)
+            logo_img.hAlign = "LEFT"
+            elements.append(logo_img)
+            elements.append(Spacer(1, 0.2 * inch))
+        except Exception:
+            pass  # Skip logo if invalid
 
     # Header
     elements.append(Paragraph("INVOICE", title_style))

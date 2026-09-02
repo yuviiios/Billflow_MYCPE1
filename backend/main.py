@@ -6,6 +6,7 @@ from routes_auth import router as auth_router
 from routes_clients import router as clients_router
 from routes_invoices import router as invoices_router
 from routes_settings import router as settings_router
+from routes_analytics import router as analytics_router
 
 load_dotenv()
 
@@ -27,6 +28,7 @@ app.include_router(auth_router)
 app.include_router(clients_router)
 app.include_router(invoices_router)
 app.include_router(settings_router)
+app.include_router(analytics_router)
 
 @app.get("/health")
 def health():
