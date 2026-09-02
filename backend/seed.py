@@ -262,7 +262,7 @@ def seed():
         db.commit()
 
         print("\n" + "="*60)
-        print("✓ Database seeded successfully!")
+        print("Database seeded successfully!")
         print("="*60)
         print(f"\nDemo Login:")
         print(f"  Email:    demo@billflow.app")
