@@ -79,10 +79,15 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  const copyPublicLink = () => {
+  const copyPublicLink = async () => {
     const url = `${window.location.origin}/public/${invoice?.public_token}`;
-    navigator.clipboard.writeText(url);
-    alert('Link copied to clipboard');
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('Link copied to clipboard');
+    } catch (error) {
+      // Fallback: show the URL in a prompt
+      prompt('Copy this link:', url);
+    }
   };
 
   const handleSend = async () => {
