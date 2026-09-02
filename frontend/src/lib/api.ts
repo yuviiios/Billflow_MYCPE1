@@ -87,6 +87,16 @@ export const getPublicInvoice = async (token: string) => {
   return res.data;
 };
 
+export const payInvoice = async (token: string) => {
+  const res = await api.post(`/invoices/public/${token}/pay`);
+  return res.data;
+};
+
+export const sendInvoice = async (id: number) => {
+  const res = await api.post(`/invoices/${id}/send`);
+  return res.data;
+};
+
 // Settings
 export const getSettings = async () => {
   const res = await api.get('/settings');

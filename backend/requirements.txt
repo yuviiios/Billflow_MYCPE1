@@ -12,3 +12,4 @@ python-dotenv==1.0.0
 pyjwt==2.13.0
 reportlab==4.0.7
 aiofiles==23.2.1
+requests==2.31.0

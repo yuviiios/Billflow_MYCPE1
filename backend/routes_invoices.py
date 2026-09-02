@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi.responses import StreamingResponse
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, joinedload, selectinload
 from database import get_db
@@ -11,8 +12,11 @@ from schemas import (
     InvoiceUpdate,
 )
 from auth import get_current_user
+from email_service import send_invoice_email
+from pdf import generate_invoice_pdf
 from typing import List, Optional
 from datetime import datetime
+import os
 
 router = APIRouter(prefix="/invoices", tags=["invoices"])
 
@@ -219,6 +223,78 @@ def get_public_invoice(token: str, db: Session = Depends(get_db)):
     return serialize_invoice(invoice)
 
 
+@router.get("/public/{token}/download")
+def download_public_invoice_pdf(token: str, db: Session = Depends(get_db)):
+    invoice = (
+        db.query(Invoice)
+        .options(joinedload(Invoice.client), selectinload(Invoice.line_items))
+        .filter(Invoice.public_token == token)
+        .first()
+    )
+    if not invoice:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Invoice not found"
+        )
+
+    settings = (
+        db.query(UserSettings).filter(UserSettings.user_id == invoice.user_id).first()
+    )
+
+    pdf_buffer = generate_invoice_pdf(
+        invoice_number=invoice.invoice_number,
+        client_name=invoice.client.name,
+        client_email=invoice.client.email,
+        client_address=invoice.client.address,
+        issue_date=invoice.issue_date,
+        due_date=invoice.due_date,
+        line_items=[
+            {
+                "description": item.description,
+                "quantity": item.quantity,
+                "unit_price": item.unit_price,
+                "amount": item.amount,
+            }
+            for item in invoice.line_items
+        ],
+        subtotal=invoice.subtotal,
+        tax=invoice.tax_amount,
+        total=invoice.total,
+        notes=invoice.notes,
+        business_name=settings.business_name if settings else "My Business",
+        business_address=settings.business_address if settings else None,
+        status=invoice.status,
+    )
+
+    filename = f"invoice_{invoice.invoice_number}.pdf"
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+@router.post("/public/{token}/pay", response_model=InvoiceResponse)
+def pay_invoice(token: str, db: Session = Depends(get_db)):
+    invoice = (
+        db.query(Invoice)
+        .options(joinedload(Invoice.client), selectinload(Invoice.line_items))
+        .filter(Invoice.public_token == token)
+        .first()
+    )
+    if not invoice:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Invoice not found"
+        )
+    if invoice.status == "paid":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invoice already paid"
+        )
+    invoice.status = "paid"
+    db.commit()
+    db.refresh(invoice)
+    return serialize_invoice(invoice)
+
+
 @router.get("/{invoice_id}", response_model=InvoiceResponse)
 def get_invoice(
     invoice_id: int,
@@ -272,6 +348,89 @@ def update_invoice(
     # Always recompute: tax_rate/discount changes affect totals even with no new lines.
     recalculate(invoice)
 
+    db.commit()
+    db.refresh(invoice)
+    return serialize_invoice(invoice)
+
+
+@router.get("/{invoice_id}/download")
+def download_invoice_pdf(
+    invoice_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    invoice = load_invoice(db, current_user, invoice_id)
+    settings = (
+        db.query(UserSettings).filter(UserSettings.user_id == current_user.id).first()
+    )
+
+    pdf_buffer = generate_invoice_pdf(
+        invoice_number=invoice.invoice_number,
+        client_name=invoice.client.name,
+        client_email=invoice.client.email,
+        client_address=invoice.client.address,
+        issue_date=invoice.issue_date,
+        due_date=invoice.due_date,
+        line_items=[
+            {
+                "description": item.description,
+                "quantity": item.quantity,
+                "unit_price": item.unit_price,
+                "amount": item.amount,
+            }
+            for item in invoice.line_items
+        ],
+        subtotal=invoice.subtotal,
+        tax=invoice.tax_amount,
+        total=invoice.total,
+        notes=invoice.notes,
+        business_name=settings.business_name if settings else "My Business",
+        business_address=settings.business_address if settings else None,
+        status=invoice.status,
+    )
+
+    filename = f"invoice_{invoice.invoice_number}.pdf"
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+@router.post("/{invoice_id}/send", response_model=InvoiceResponse)
+def send_invoice(
+    invoice_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    invoice = load_invoice(db, current_user, invoice_id)
+    if invoice.status == "paid":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot send a paid invoice",
+        )
+
+    # Get user settings for business name
+    settings = (
+        db.query(UserSettings).filter(UserSettings.user_id == current_user.id).first()
+    )
+    business_name = settings.business_name if settings else "My Business"
+
+    # Construct public URL
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    public_url = f"{frontend_url}/public/{invoice.public_token}"
+
+    # Send email
+    client = invoice.client
+    send_invoice_email(
+        to_email=client.email,
+        client_name=client.name,
+        invoice_number=invoice.invoice_number,
+        public_url=public_url,
+        business_name=business_name,
+    )
+
+    invoice.status = "sent"
     db.commit()
     db.refresh(invoice)
     return serialize_invoice(invoice)

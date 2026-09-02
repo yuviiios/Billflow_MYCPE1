@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { getInvoice, updateInvoice } from '@/lib/api';
+import { getInvoice, updateInvoice, sendInvoice } from '@/lib/api';
 import Link from 'next/link';
 
 interface LineItem {
@@ -85,6 +85,26 @@ export default function InvoiceDetailPage() {
     alert('Link copied to clipboard');
   };
 
+  const handleSend = async () => {
+    if (!invoice) return;
+    if (!confirm('Send this invoice to the client?')) return;
+    try {
+      const updated = await sendInvoice(invoice.id);
+      setInvoice(updated);
+      alert('Invoice sent!');
+    } catch (error) {
+      console.error('Failed to send invoice', error);
+      alert('Failed to send invoice');
+    }
+  };
+
+  const handleDownload = () => {
+    if (!invoice) return;
+    const token = localStorage.getItem('token');
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    window.open(`${apiUrl}/invoices/${invoice.id}/download?token=${token}`, '_blank');
+  };
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
@@ -114,6 +134,20 @@ export default function InvoiceDetailPage() {
               </span>
             </div>
             <div className="flex gap-2">
+              {invoice.status === 'draft' && (
+                <button
+                  onClick={handleSend}
+                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm"
+                >
+                  Send Invoice
+                </button>
+              )}
+              <button
+                onClick={handleDownload}
+                className="px-4 py-2 border rounded hover:bg-gray-50 text-sm"
+              >
+                Download PDF
+              </button>
               <button
                 onClick={copyPublicLink}
                 className="px-4 py-2 border rounded hover:bg-gray-50 text-sm"
